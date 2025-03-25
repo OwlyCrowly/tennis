@@ -82,9 +82,22 @@ button:hover {
     margin-bottom: 1rem;
 }
 
-.match-settings {
-    flex-direction: column; /* Элементы вертикально */
+/*.match-settings {
+    flex-direction: column;  Элементы вертикально 
     gap: 0.5rem;
+}
+*/
+
+.match-settings {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: #f8f8f8;
+    border-radius: 5px;
+    width: 100%; /* Добавлено */
+    box-sizing: border-box; /* Добавлено */
+    display: flex; /* Добавлено */
+    flex-direction: column; /* Добавлено */
+    align-items: center; /* Добавлено */
 }
 
 .match-settings label {
