@@ -1,56 +1,56 @@
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
     margin: 0;
     background-color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Изменено для мобильных устройств */
+    padding: 10px; /* Добавлено */
 }
 
 .container {
     text-align: center;
     background: white;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    width: 95%; /* Добавлено */
+    max-width: 600px; /* Ограничение максимальной ширины */
+    margin: 10px 0; /* Добавлено */
 }
 
 .player-container {
     display: flex;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    flex-direction: column; /* Вертикально на мобильных */
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 600px) {
+    .player-container {
+        flex-direction: row; /* Горизонтально на десктопе */
+    }
 }
 
 .player {
     padding: 1rem;
     border: 2px solid #333;
     border-radius: 5px;
-    min-width: 150px;
-}
-
-.player h2 {
-    margin: 0 0 1rem 0;
-    color: #333;
+    width: 100%; /* Занимает всю ширину контейнера */
+    box-sizing: border-box; /* Учитывает padding в ширине */
 }
 
 .current-score {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin: 1rem 0;
-    color: #2196F3;
-}
-
-.games-won {
-    color: #4CAF50;
-    font-weight: bold;
-    margin-bottom: 1rem;
+    font-size: 2rem; /* Уменьшено для мобильных */
+    margin: 0.5rem 0;
 }
 
 button {
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    width: 90%; /* Кнопки занимают почти всю ширину */
+    margin: 5px auto; /* Центрирование */
     background-color: #2196F3;
     color: white;
     border: none;
@@ -70,6 +70,12 @@ button:hover {
     background-color: #d32f2f;
 }
 
+.games-won {
+    color: #4CAF50;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
 .sets-won {
     color: #9C27B0;
     font-weight: bold;
@@ -77,19 +83,14 @@ button:hover {
 }
 
 .match-settings {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background: #f8f8f8;
-    border-radius: 5px;
+    flex-direction: column; /* Элементы вертикально */
+    gap: 0.5rem;
 }
 
 .match-settings label {
-    margin-right: 1.5rem;
-    cursor: pointer;
-}
-
-.match-settings input[type="radio"] {
-    margin-right: 0.5rem;
+    margin-right: 0;
+    display: block;
+    text-align: left;
 }
 
 .disabled {
