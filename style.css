@@ -7,17 +7,23 @@ body {
     justify-content: center;
     align-items: flex-start; /* Изменено для мобильных устройств */
     padding: 10px; /* Добавлено */
+    min-height: 100vh;
+    overflow: hidden; /* Запрещаем глобальную прокрутку */
 }
 
 .container {
     text-align: center;
     background: white;
-    padding: 1rem;
+    padding: 1rem 1rem 0.5rem;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     width: 95%; /* Добавлено */
     max-width: 600px; /* Ограничение максимальной ширины */
     margin: 10px 0; /* Добавлено */
+    height: calc(100vh - 30px); /* 30px = верхний+нижний padding + margin */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Распределяем пространство */
 }
 
 .player-container {
@@ -25,6 +31,9 @@ body {
     flex-direction: column; /* Вертикально на мобильных */
     gap: 1rem;
     margin-bottom: 1rem;
+    flex-grow: 1; /* Занимает все свободное пространство */
+    overflow-y: auto; /* Разрешаем прокрутку только внутри игроков */
+    padding: 5px; /* Чтобы контент не прилипал к краям */
 }
 
 @media (min-width: 600px) {
@@ -39,6 +48,7 @@ body {
     border-radius: 5px;
     width: 100%; /* Занимает всю ширину контейнера */
     box-sizing: border-box; /* Учитывает padding в ширине */
+    min-height: 250px; /* Минимальная высота блока игрока */
 }
 
 .current-score {
@@ -64,6 +74,10 @@ button:hover {
 
 .reset-btn {
     background-color: #f44336;
+    flex-shrink: 0; /* Фиксируем кнопку сброса */
+    /*margin-top: 10px;*/
+    margin-top: 5px; /* Уменьшаем отступ сверху */
+    margin-bottom: 5px; /* Добавляем отступ снизу */
 }
 
 .reset-btn:hover {
@@ -89,7 +103,7 @@ button:hover {
 */
 
 .match-settings {
-    margin-bottom: 1.5rem;
+    /*margin-bottom: 1.5rem;*/
     padding: 1rem;
     background: #f8f8f8;
     border-radius: 5px;
@@ -98,6 +112,8 @@ button:hover {
     display: flex; /* Добавлено */
     flex-direction: column; /* Добавлено */
     align-items: center; /* Добавлено */
+    margin-bottom: 0; /* Убираем отступ снизу */
+    flex-shrink: 0; /* Запрещаем сжатие */
 }
 
 .match-settings label {
