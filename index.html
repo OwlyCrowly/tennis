@@ -8,32 +8,33 @@
 </head>
 <body>
     <div class="container">
-        <div class="match-settings">
-            <label>
-                <input type="radio" name="bestOf" value="3" checked onclick="changeMatchFormat(3)"> 2 из 3-х сетов
-            </label>
-            <label>
-                <input type="radio" name="bestOf" value="5" onclick="changeMatchFormat(5)"> 3 из 5-ти сетов
-            </label>
-        </div>
-        <div class="player-container">
-            <div class="player" id="player1">
-                <h2>Игрок 1</h2>
-                <div class="sets-won">Сет: 0</div>
-                <div class="games-won">Гейм: 0</div>
-                <div class="current-score">0</div>
-                <button onclick="addPoint(1)">+ Мяч</button>
+        <div class="content-wrapper">
+            <div class="match-settings">
+                <label>
+                    <input type="radio" name="bestOf" value="3" checked onclick="changeMatchFormat(3)"> 2 из 3-х сетов
+                </label>
+                <label>
+                    <input type="radio" name="bestOf" value="5" onclick="changeMatchFormat(5)"> 3 из 5-ти сетов
+                </label>
             </div>
-            
-            <div class="player" id="player2">
-                <h2>Игрок 2</h2>
-                <div class="sets-won">Сет: 0</div>
-                <div class="games-won">Гейм: 0</div>
-                <div class="current-score">0</div>
-                <button onclick="addPoint(2)">+ Мяч</button>
+            <div class="player-container">
+                <div class="player" id="player1">
+                    <h2>Игрок 1</h2>
+                    <div class="sets-won">Сет: 0</div>
+                    <div class="games-won">Гейм: 0</div>
+                    <div class="current-score">0</div>
+                    <button onclick="addPoint(1)">+ Мяч</button>
+                </div>
+                
+                <div class="player" id="player2">
+                    <h2>Игрок 2</h2>
+                    <div class="sets-won">Сет: 0</div>
+                    <div class="games-won">Гейм: 0</div>
+                    <div class="current-score">0</div>
+                    <button onclick="addPoint(2)">+ Мяч</button>
+                </div>
             </div>
         </div>
-        
         <button class="reset-btn" onclick="resetScore()">Сброс</button>
     </div>
 

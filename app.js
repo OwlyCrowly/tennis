@@ -1,7 +1,3 @@
-Telegram.WebApp.ready();
-Telegram.WebApp.expand(); // Растянуть на весь экран
-Telegram.WebApp.enableClosingConfirmation(); // Подтверждение закрытия
-
 let matchState = {
     p1: { points: 0, games: 0, sets: 0 },
     p2: { points: 0, games: 0, sets: 0 },
