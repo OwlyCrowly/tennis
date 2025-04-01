@@ -8,15 +8,48 @@ let matchState = {
     matchWinner: null
 };
 
+// Добавляем инициализацию Telegram Web App
+//const tg = window.Telegram?.WebApp;
+if (window.Telegram && window.Telegram.WebApp) {
+  const tg = window.Telegram.WebApp;
+  tg.ready(); // Говорим Telegram, что приложение готово
+  tg.expand(); // Принудительно разворачиваем на весь экран
+  
+  // Блокируем закрытие приложения случайным свайпом
+  tg.enableClosingConfirmation();
+  
+  // Обновляем viewport при изменении ориентации
+  tg.onEvent('viewportChanged', tg.expand);
+}
+
 const pointValues = ['0', '15', '30', '40'];
+
+// Модифицируем функции для сохранения состояния
+function saveState() {
+    try {
+        localStorage.setItem('tennisScoreState', JSON.stringify(matchState));
+    } catch(e) {
+        console.error('Ошибка сохранения:', e);
+    }
+}
+
+function loadState() {
+    try {
+        const saved = localStorage.getItem('tennisScoreState');
+        if (saved) matchState = JSON.parse(saved);
+    } catch(e) {
+        console.error('Ошибка загрузки:', e);
+    }
+}
+
 
 // Основные функции должны быть объявлены перед их использованием
 function getScoreDisplay(current, opponent) {
-    if (current >= 3 && opponent >= 3) {
-        if (current === opponent) return 'Ровно';
-        if (Math.abs(current - opponent) === 1) return current > opponent ? 'Больше' : '-';
-    }
-    return pointValues[current] || '40';
+  if (current >= 3 && opponent >= 3) {
+    if (current === opponent) return 'Ровно';
+    return current > opponent ? 'Больше' : 'Меньше'; // Более понятные обозначения
+  }
+  return ['0', '15', '30', '40'][current] || '40';
 }
 
 function checkGameWinner(player, opponent) {
@@ -89,7 +122,7 @@ function awardGame(player, opponent) {
 
     if (checkSetWinner(player, opponent)) {
         if (!awardSet(player, opponent)) {
-            alert(`Сет ${matchState.currentSet - 1} выиграл ${player === matchState.p1 ? 'Игрок 1' : 'Игрок 2'}!`);
+            //alert(`Сет ${matchState.currentSet - 1} выиграл ${player === matchState.p1 ? 'Игрок 1' : 'Игрок 2'}!`);
         }
     }
 
@@ -112,35 +145,41 @@ function addPoint(playerNumber) {
     }
     
     updateDisplay();
+    saveState(); // Сохраняем после каждого изменения
 }
 
 function updateDisplay() {
-    // Обновление сетами
-    document.querySelectorAll('.sets-won').forEach((el, i) => {
-        el.textContent = `Сеты: ${i === 0 ? matchState.p1.sets : matchState.p2.sets}`;
-    });
-    
-    // Обновление геймами
-    document.querySelector('#player1 .games-won').textContent = `Геймы: ${matchState.p1.games}`;
-    document.querySelector('#player2 .games-won').textContent = `Геймы: ${matchState.p2.games}`;
-    
-    // Обновление очков
-    const p1Points = matchState.isTieBreak ? 
-        matchState.p1.points : 
-        getScoreDisplay(matchState.p1.points, matchState.p2.points);
+     // Обновляем данные для обоих игроков через цикл
+    [1, 2].forEach(playerNumber => {
+        const player = playerNumber === 1 ? matchState.p1 : matchState.p2;
+        const opponent = playerNumber === 1 ? matchState.p2 : matchState.p1;
         
-    const p2Points = matchState.isTieBreak ? 
-        matchState.p2.points : 
-        getScoreDisplay(matchState.p2.points, matchState.p1.points);
-    
-    document.querySelector('#player1 .current-score').textContent = p1Points;
-    document.querySelector('#player2 .current-score').textContent = p2Points;
+        // Находим элементы по data-атрибутам
+        const container = document.querySelector(`[data-player="${playerNumber}"]`);
+        
+        // Обновляем сеты
+        container.querySelector('.sets-won').textContent = `Сеты: ${player.sets}`;
+        
+        // Обновляем геймы
+        container.querySelector('.games-won').textContent = `Геймы: ${player.games}`;
+        
+        // Обновляем очки с учетом тай-брейка
+        const pointsElement = container.querySelector('.current-score');
+        if (matchState.isTieBreak) {
+            pointsElement.textContent = player.points;
+        } else {
+            pointsElement.textContent = getScoreDisplay(player.points, opponent.points);
+        }
+    });
 
-    // Блокировка кнопок
-    const buttons = document.querySelectorAll('button:not(.reset-btn)');
-    buttons.forEach(btn => {
+    // Блокируем кнопки добавления очков при завершении матча
+    const pointButtons = document.querySelectorAll('[data-point-button]');
+    pointButtons.forEach(btn => {
         btn.disabled = matchState.matchWinner !== null;
     });
+
+    // Обновляем статус кнопки сброса
+    document.querySelector('.reset-btn').disabled = false;
 }
 
 function changeMatchFormat(format) {
@@ -164,9 +203,20 @@ function resetScore() {
     matchState.setsHistory = [];
     matchState.matchWinner = null;
     updateDisplay();
+    saveState(); // Сохраняем после сброса
 }
+
 
 // Инициализация при загрузке
 document.addEventListener('DOMContentLoaded', () => {
+    loadState(); // Загружаем сохраненное состояние
     updateDisplay();
+    
+    // Добавляем обработчики касаний
+    document.querySelectorAll('button:not(.reset-btn)').forEach(btn => {
+        btn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            this.click();
+        });
+    });
 });
